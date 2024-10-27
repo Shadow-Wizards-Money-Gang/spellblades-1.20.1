@@ -491,9 +491,6 @@ public class Magister extends PathAwareEntity implements InventoryOwner, GeoEnti
                     new ItemStack(Spellblades.RUNEBLAZE, 2),
                     offering, 10, 8, 1F));
             offers.add(new TradeOffer(
-                    new ItemStack(Spellblades.RUNEGLEAM, 2),
-                    offering, 10, 8, 1F));
-            offers.add(new TradeOffer(
                     new ItemStack(Spellblades.RUNEFROST, 2),
                     offering, 10, 8, 1F));
             offers.add(new TradeOffer(

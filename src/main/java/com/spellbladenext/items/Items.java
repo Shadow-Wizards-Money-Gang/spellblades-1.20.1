@@ -7,6 +7,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.spell_engine.api.item.ItemConfig;
 import net.spell_engine.api.item.weapon.Weapon;
 import net.spell_power.api.SpellPowerMechanics;
@@ -80,7 +81,7 @@ public class Items {
     }
     private static Weapon.Entry blade(String requiredMod, String name, Weapon.CustomMaterial material, float damage, SpellSchool school) {
         var settings = new Item.Settings();
-        var item = new Spellblade(material, settings, 1, -2.4F, school);
+        var item = new Spellblade(material, settings.rarity(Rarity.UNCOMMON), 1, -2.4F, school);
         return entry(requiredMod, name, material, item, new ItemConfig.Weapon(damage, -2.4F));
     }
     public static final Weapon.Entry STARFORGE = starforge("starforge",
@@ -107,7 +108,7 @@ public class Items {
             Weapon.CustomMaterial.matching(ToolMaterials.DIAMOND, () -> Ingredient.ofItems(Spellblades.RUNEBLAZE)), 5F,SpellSchools.FIRE)
             .attribute(ItemConfig.Attribute.bonus((SpellSchools.FIRE).id, 3));
     public static final Weapon.Entry crystal_cutlass = blade("crystal_cutlass",
-            Weapon.CustomMaterial.matching(ToolMaterials.DIAMOND, () -> Ingredient.ofItems(Spellblades.RUNEGLEAM)), 5F,SpellSchools.ARCANE)
+            Weapon.CustomMaterial.matching(ToolMaterials.DIAMOND, () -> Ingredient.ofItems(Spellblades.RUNEBLAZE)), 5F,SpellSchools.ARCANE)
             .attribute(ItemConfig.Attribute.bonus((SpellSchools.ARCANE).id, 3));
 
     private static Weapon.Entry claymore(String name, Weapon.CustomMaterial material, float damage, SpellSchool school) {
@@ -115,7 +116,7 @@ public class Items {
     }
     private static Weapon.Entry claymore(String requiredMod, String name, Weapon.CustomMaterial material, float damage,SpellSchool school) {
         var settings = new Item.Settings();
-        var item = new Claymore(material, settings,3,-3,  school);
+        var item = new Claymore(material, settings.rarity(Rarity.RARE),3,-3,  school);
         return entry(requiredMod, name, material, item, new ItemConfig.Weapon(damage, -3F));
     }
     public static final Weapon.Entry frost_claymore = claymore("frost_claymore",
@@ -132,7 +133,7 @@ public class Items {
     }
     private static Weapon.Entry orb(String requiredMod, String name, Weapon.CustomMaterial material, float damage,SpellSchool school) {
         var settings = new Item.Settings();
-        var item = new Orb(material, settings, school);
+        var item = new Orb(material, settings.rarity(Rarity.UNCOMMON), school);
         return entry(requiredMod, name, material, item, new ItemConfig.Weapon(damage, -3F));
     }
     public static final Weapon.Entry frost_orb = orb("frost_orb",

@@ -15,7 +15,6 @@ import com.spellbladenext.invasions.attackevent;
 import com.spellbladenext.items.*;
 import com.spellbladenext.items.Items;
 import com.spellbladenext.items.Omni;
-import com.spellbladenext.items.armor.Armors;
 import com.spellbladenext.items.attacks.Attacks;
 import com.spellbladenext.items.interfaces.PlayerDamageInterface;
 import com.spellbladenext.items.loot.Default;
@@ -88,9 +87,6 @@ import net.minecraft.world.dimension.DimensionType;
 import net.spell_engine.api.item.ItemConfig;
 import net.spell_engine.api.item.trinket.SpellBookItem;
 import net.spell_engine.api.item.trinket.SpellBooks;
-import net.spell_engine.api.loot.LootConfig;
-import net.spell_engine.api.loot.LootConfigV2;
-import net.spell_engine.api.loot.LootHelper;
 import net.spell_engine.api.render.CustomModels;
 import net.spell_engine.api.spell.*;
 import net.spell_engine.internals.SpellContainerHelper;
@@ -112,12 +108,10 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static com.spellbladenext.items.attacks.Attacks.eleWhirlwind;
 import static java.lang.Math.*;
 import static net.minecraft.registry.Registries.ENTITY_TYPE;
 import static net.spell_engine.api.item.trinket.SpellBooks.itemIdFor;
 import static net.spell_engine.internals.SpellHelper.imposeCooldown;
-import static net.spell_engine.internals.SpellHelper.launchPoint;
 
 public class Spellblades implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -157,21 +151,13 @@ public class Spellblades implements ModInitializer {
 	public static Item spellOil = new RandomSpellOil(new FabricItemSettings().maxCount(1));
 	public static Item RUNEBLAZE = new Item(new FabricItemSettings().maxCount(64));
 	public static Item RUNEFROST = new Item(new FabricItemSettings().maxCount(64));
-	public static Item RUNEGLEAM = new Item(new FabricItemSettings().maxCount(64));
 	public static Item RUNEBLAZEPLATE = new Item(new FabricItemSettings().maxCount(64));
 	public static Item RUNEFROSTPLATE = new Item(new FabricItemSettings().maxCount(64));
-	public static Item RUNEGLEAMPLATE = new Item(new FabricItemSettings().maxCount(64));
 	public static Item RUNEBLAZENUGGET = new Item(new FabricItemSettings().maxCount(64));
 	public static Item RUNEFROSTNUGGET = new Item(new FabricItemSettings().maxCount(64));
-	public static Item RUNEGLEAMNUGGET = new Item(new FabricItemSettings().maxCount(64));
 
-	public static Item MONKEYSTAFF = new MonkeyStaff(0,0,new FabricItemSettings());
 	public static Item PRISMATIC = new PrismaticEffigy(new FabricItemSettings());
 	public static Item THREAD = new Item(new FabricItemSettings().maxCount(64));
-
-/*
-	public static Item RIFLE = new Rifle(new FabricItemSettings().maxDamage(2000));
-*/
 
 	public static final GameRules.Key<GameRules.BooleanRule> SHOULD_INVADE = GameRuleRegistry.register("hexbladeInvade", GameRules.Category.MOBS, GameRuleFactory.createBooleanRule(true));
 	public static EntityType<Magus> ARCHMAGUS;
@@ -280,16 +266,12 @@ public class Spellblades implements ModInitializer {
 
 		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runeblaze_ingot"),RUNEBLAZE);
 		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runefrost_ingot"),RUNEFROST);
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runegleam_ingot"),RUNEGLEAM);
 
 		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runeblaze_plate"),RUNEBLAZEPLATE);
 		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runefrost_plate"),RUNEFROSTPLATE);
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runegleam_plate"),RUNEGLEAMPLATE);
 
 		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runeblaze_nugget"),RUNEBLAZENUGGET);
 		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runefrost_nugget"),RUNEFROSTNUGGET);
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runegleam_nugget"),RUNEGLEAMNUGGET);
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"monkeystaff"),MONKEYSTAFF);
 		Registry.register(Registries.BLOCK,new Identifier(MOD_ID,"hexblade"),HEXBLADE);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID,"hexbladeitem"), HEXBLADEITEM);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID,"ashes"), ASHES);
@@ -368,7 +350,6 @@ public class Spellblades implements ModInitializer {
 		}
 		itemConfig.refresh();
 		Items.register(itemConfig.value.weapons);
-		Armors.register(itemConfig.value.armor_sets);
 
 		CustomModels.registerModelIds(List.of(
 				new Identifier(MOD_ID, "projectile/flamewaveprojectile")
@@ -398,24 +379,23 @@ public class Spellblades implements ModInitializer {
 		Registry.register(Registries.ITEM_GROUP, SPELLOILSKEY, SPELLOILS);
 		Registry.register(Registries.ITEM_GROUP, THESISKEY, THESIS);
 
+		/*
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"frost_battlemage"),KEY);
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"fire_battlemage"),KEY);
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"arcane_battlemage"),KEY);
+
+		 */
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"runic_echoes"),KEY);
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"phoenix"),KEY);
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"deathchill"),KEY);
 		ItemGroupEvents.modifyEntriesEvent(KEY).register((content) -> {
 			content.add(spellOil);
 			content.add(RUNEBLAZE);
-			content.add(RUNEGLEAM);
 			content.add(RUNEFROST);
 			content.add(RUNEBLAZEPLATE);
-			content.add(RUNEGLEAMPLATE);
 			content.add(RUNEFROSTPLATE);
 			content.add(RUNEBLAZENUGGET);
-			content.add(RUNEGLEAMNUGGET);
 			content.add(RUNEFROSTNUGGET);
-			content.add(MONKEYSTAFF);
 			content.add(HEXBLADEITEM);
 			content.add(OFFERING);
 			content.add(NETHERDEBUG);
@@ -428,10 +408,6 @@ public class Spellblades implements ModInitializer {
 			content.add(BOOK);
 
 			content.add(MAGUS_SPAWN_EGG);
-
-
-
-			/*content.add(RIFLE);*/
 		});
 			TABULARASA = new TabulaRasa(new Identifier(MOD_ID, "tabula_rasa"), new Item.Settings().maxCount(1));
 			Registry.register(Registries.ITEM, new Identifier(MOD_ID, "tabula_rasa"), TABULARASA);

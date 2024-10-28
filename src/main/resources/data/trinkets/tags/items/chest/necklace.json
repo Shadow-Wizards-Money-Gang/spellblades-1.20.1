@@ -1,11 +1,6 @@
 {
   "replace": false,
   "values": [
-    "spellbladenext:ashes",
-    "spellbladenext:higherpurpose",
-    "spellbladenext:theavatar",
-    "spellbladenext:omni"
-
-
+    "spellbladenext:ashes"
   ]
 }

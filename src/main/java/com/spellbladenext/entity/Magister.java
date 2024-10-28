@@ -484,15 +484,10 @@ public class Magister extends PathAwareEntity implements InventoryOwner, GeoEnti
 
     @Override
     public TradeOfferList getOffers() {
+        // #TODO add new
         TradeOfferList offers = new TradeOfferList();
         if(this.getMainHandStack().isEmpty()) {
             ItemStack offering = new ItemStack(Spellblades.OFFERING);
-            offers.add(new TradeOffer(
-                    new ItemStack(Spellblades.RUNEBLAZE, 2),
-                    offering, 10, 8, 1F));
-            offers.add(new TradeOffer(
-                    new ItemStack(Spellblades.RUNEFROST, 2),
-                    offering, 10, 8, 1F));
             offers.add(new TradeOffer(
                     new ItemStack(com.spellbladenext.items.Items.arcane_blade.item(), 1),
                     offering, 10, 8, 1F));

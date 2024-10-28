@@ -340,15 +340,11 @@ public class Magus extends HostileEntity implements InventoryOwner, GeoEntity {
             return super.dropStack(stack);
         }
         else{
-            if(stack.getItem()== com.spellbladenext.items.Items.STARFORGE.item()){
-                return AIR;
+
+            if(this.getRandom().nextBoolean()){
+                return super.dropStack(stack);
             }
-            else{
-                if(this.getRandom().nextBoolean()){
-                    return super.dropStack(stack);
-                }
-                    return AIR;
-                }
+            return AIR;
         }
     }
 

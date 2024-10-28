@@ -7,7 +7,6 @@ import com.spellbladenext.block.Hexblade;
 import com.spellbladenext.block.HexbladeBlockItem;
 import com.spellbladenext.config.ConfigSync;
 import com.spellbladenext.effect.*;
-import com.spellbladenext.items.TabulaRasa;
 import com.spellbladenext.config.ServerConfig;
 import com.spellbladenext.config.ServerConfigWrapper;
 import com.spellbladenext.entity.*;
@@ -139,22 +138,10 @@ public class Spellblades implements ModInitializer {
 	public static final Item HEXBLADEITEM = new HexbladeBlockItem(HEXBLADE,new FabricItemSettings().maxCount(1));
 	public static final Item ASHES = new Ashes(new FabricItemSettings().maxCount(1));
 	public static final Item VOID = new Omni(new FabricItemSettings().maxCount(1));
-	public static final Item SINGULARPURPOSE = new SingularPurpose(new FabricItemSettings().maxCount(1));
-	public static final Item THEAVATAR = new TheAvatar(new FabricItemSettings().maxCount(1));
 	public static ArrayList<attackevent> attackeventArrayList = new ArrayList<>();
 
 	public static final Item OFFERING = new Offering(new FabricItemSettings());
 	public static RegistryKey<ItemGroup> KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(),new Identifier(Spellblades.MOD_ID,"generic"));
-	public static RegistryKey<ItemGroup> SPELLOILSKEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(),new Identifier(Spellblades.MOD_ID,"oils"));
-	public static RegistryKey<ItemGroup> THESISKEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(),new Identifier(Spellblades.MOD_ID,"thesis"));
-
-	public static Item spellOil = new RandomSpellOil(new FabricItemSettings().maxCount(1));
-	public static Item RUNEBLAZE = new Item(new FabricItemSettings().maxCount(64));
-	public static Item RUNEFROST = new Item(new FabricItemSettings().maxCount(64));
-	public static Item RUNEBLAZEPLATE = new Item(new FabricItemSettings().maxCount(64));
-	public static Item RUNEFROSTPLATE = new Item(new FabricItemSettings().maxCount(64));
-	public static Item RUNEBLAZENUGGET = new Item(new FabricItemSettings().maxCount(64));
-	public static Item RUNEFROSTNUGGET = new Item(new FabricItemSettings().maxCount(64));
 
 	public static Item PRISMATIC = new PrismaticEffigy(new FabricItemSettings());
 	public static Item THREAD = new Item(new FabricItemSettings().maxCount(64));
@@ -168,7 +155,6 @@ public class Spellblades implements ModInitializer {
 	public static StatusEffect PORTALSICKNESS = new CustomEffect(StatusEffectCategory.HARMFUL, 0xff4bdd);
 	public static StatusEffect UNLEASH = new CustomEffect(StatusEffectCategory.BENEFICIAL, 0xff4bdd);
 	public static StatusEffect SLAMMING = new Slamming(StatusEffectCategory.BENEFICIAL, 0xff4bdd);
-	public static ThesisBook BOOK;
 
 	private static PacketByteBuf configSerialized = PacketByteBufs.create();
 
@@ -181,7 +167,6 @@ public class Spellblades implements ModInitializer {
 	public static final RegistryKey<World> DIMENSIONKEY = RegistryKey.of(RegistryKeys.WORLD,new Identifier(Spellblades.MOD_ID,"glassocean"));
 
 	public static final RegistryKey<DimensionType> DIMENSION_TYPE_RESOURCE_KEY = RegistryKey.of(RegistryKeys.DIMENSION_TYPE,new Identifier(Spellblades.MOD_ID,"glassocean"));
-	public static TabulaRasa TABULARASA;
 
 	public static ConfigManager<ItemConfig> itemConfig = new ConfigManager<ItemConfig>
 			("items_v7", Default.itemConfig)
@@ -229,18 +214,9 @@ public class Spellblades implements ModInitializer {
 				.icon(() -> new ItemStack(Items.arcane_blade.item()))
 				.displayName(Text.translatable("itemGroup.spellbladenext.general"))
 				.build();
-		SPELLOILS = FabricItemGroup.builder()
-				.icon(() -> new ItemStack(spellOil.asItem()))
-				.displayName(Text.translatable("itemGroup.spellbladenext.spelloils"))
-				.build();
-		THESIS = FabricItemGroup.builder()
-				.icon(() -> new ItemStack(BOOK.asItem()))
-				.displayName(Text.translatable("itemGroup.spellbladenext.thesis"))
-				.build();
 		SpellContainer container = new SpellContainer(SpellContainer.ContentType.MAGIC, false, new Identifier(MOD_ID,"thesis").toString(), 0, List.of());
 		SpellRegistry.book_containers.put(itemIdFor(new Identifier(MOD_ID,"thesis")), container);
 
-		BOOK = new ThesisBook( new Identifier(MOD_ID,"thesis"),new Item.Settings().maxCount(1));
 
 		AutoConfig.register(ServerConfigWrapper.class, PartitioningSerializer.wrap(JanksonConfigSerializer::new));
 
@@ -262,28 +238,16 @@ public class Spellblades implements ModInitializer {
 		);
 		MAGUS_SPAWN_EGG = new SpawnEggItem(ARCHMAGUS, 0x09356B, 0xebcb6a, new FabricItemSettings());
 
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"spelloil"),spellOil);
 
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runeblaze_ingot"),RUNEBLAZE);
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runefrost_ingot"),RUNEFROST);
-
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runeblaze_plate"),RUNEBLAZEPLATE);
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runefrost_plate"),RUNEFROSTPLATE);
-
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runeblaze_nugget"),RUNEBLAZENUGGET);
-		Registry.register(Registries.ITEM,new Identifier(MOD_ID,"runefrost_nugget"),RUNEFROSTNUGGET);
 		Registry.register(Registries.BLOCK,new Identifier(MOD_ID,"hexblade"),HEXBLADE);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID,"hexbladeitem"), HEXBLADEITEM);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID,"ashes"), ASHES);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID,"omni"), VOID);
-		Registry.register(Registries.ITEM, new Identifier(MOD_ID,"higherpurpose"), SINGULARPURPOSE);
-		Registry.register(Registries.ITEM, new Identifier(MOD_ID,"theavatar"), THEAVATAR);
 
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID,"offering"), OFFERING);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID, "debug"), NETHERDEBUG);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID, "prismatic"), PRISMATIC);
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID, "thread"), THREAD);
-		Registry.register(Registries.ITEM, new Identifier(MOD_ID, "thesis_spell_book"), BOOK);
 
 		Registry.register(Registries.ITEM, new Identifier(MOD_ID, "magus_spawn_egg"), MAGUS_SPAWN_EGG);
 		Registry.register(Registries.ATTRIBUTE,new Identifier(MOD_ID,"purpose"),PURPOSE);
@@ -360,6 +324,7 @@ public class Spellblades implements ModInitializer {
 		CustomModels.registerModelIds(List.of(
 				new Identifier(MOD_ID, "projectile/gladius")
 		));
+		/*
 		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
 					if (source.isBuiltin() && LootTables.END_CITY_TREASURE_CHEST.equals(id)) {
 						LootPool.Builder poolBuilder = LootPool.builder()
@@ -375,10 +340,9 @@ public class Spellblades implements ModInitializer {
 
 			}
 		});
-		Registry.register(Registries.ITEM_GROUP, KEY, SPELLBLADES);
-		Registry.register(Registries.ITEM_GROUP, SPELLOILSKEY, SPELLOILS);
-		Registry.register(Registries.ITEM_GROUP, THESISKEY, THESIS);
 
+		 */
+		Registry.register(Registries.ITEM_GROUP, KEY, SPELLBLADES);
 		/*
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"frost_battlemage"),KEY);
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"fire_battlemage"),KEY);
@@ -389,13 +353,6 @@ public class Spellblades implements ModInitializer {
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"phoenix"),KEY);
 		SpellBooks.createAndRegister(new Identifier(MOD_ID,"deathchill"),KEY);
 		ItemGroupEvents.modifyEntriesEvent(KEY).register((content) -> {
-			content.add(spellOil);
-			content.add(RUNEBLAZE);
-			content.add(RUNEFROST);
-			content.add(RUNEBLAZEPLATE);
-			content.add(RUNEFROSTPLATE);
-			content.add(RUNEBLAZENUGGET);
-			content.add(RUNEFROSTNUGGET);
 			content.add(HEXBLADEITEM);
 			content.add(OFFERING);
 			content.add(NETHERDEBUG);
@@ -403,92 +360,11 @@ public class Spellblades implements ModInitializer {
 			content.add(THREAD);
 			content.add(ASHES);
 			content.add(VOID);
-			content.add(SINGULARPURPOSE);
-			content.add(THEAVATAR);
-			content.add(BOOK);
 
 			content.add(MAGUS_SPAWN_EGG);
 		});
-			TABULARASA = new TabulaRasa(new Identifier(MOD_ID, "tabula_rasa"), new Item.Settings().maxCount(1));
-			Registry.register(Registries.ITEM, new Identifier(MOD_ID, "tabula_rasa"), TABULARASA);
-			ItemGroupEvents.modifyEntriesEvent(KEY).register((content) -> {
-
-				content.add(TABULARASA);
-			});
-		ItemGroupEvents.modifyEntriesEvent(THESISKEY).register((content) -> {
-			List<SpellBookItem> books = SpellBooks.sorted();
-			List<SpellPool> pools = new ArrayList<SpellPool>();
-			List<Identifier> spells = new ArrayList<Identifier>();
-
-			for (SpellBookItem book : books) {
-				pools.add(SpellRegistry.spellPool(book.getPoolId()));
-			}
-			for (SpellBookItem book : books) {
-				pools.add(SpellRegistry.spellPool(book.getPoolId()));
-			}
-			for (SpellPool pool : pools) {
-				spells.addAll(pool.spellIds());
-			}
-
-			spells.add(new Identifier(Spellblades.MOD_ID,"smite"));
-			spells.add(new Identifier(Spellblades.MOD_ID,"whirlwind"));
 
 
-			spells.remove(new Identifier("spellbladenext:thesis"));
-			spells.removeIf(spell -> {
-						if (SpellRegistry.getSpell(spell) != null && SpellRegistry.getSpell(spell).school != null) {
-							return SpellRegistry.getSpell(spell).school.equals(ExternalSpellSchools.PHYSICAL_RANGED);
-						}
-						else {
-							return false;
-						}
-                    });
-			for(Identifier id : spells){
-				ItemStack stack = BOOK.getDefaultStack();
-				SpellContainerHelper.addSpell(id,stack);
-				content.add(stack);
-			}
-
-				}
-		);
-		ItemGroupEvents.modifyEntriesEvent(SPELLOILSKEY).register((content) -> {
-			List<SpellBookItem> books = SpellBooks.sorted();
-			List<SpellPool> pools = new ArrayList<SpellPool>();
-			List<Identifier> spells = new ArrayList<Identifier>();
-
-			for (SpellBookItem book : books) {
-				pools.add(SpellRegistry.spellPool(book.getPoolId()));
-			}
-			for (SpellBookItem book : books) {
-				pools.add(SpellRegistry.spellPool(book.getPoolId()));
-			}
-			for (SpellPool pool : pools) {
-				spells.addAll(pool.spellIds());
-			}
-
-			spells.add(new Identifier(Spellblades.MOD_ID,"smite"));
-			spells.add(new Identifier(Spellblades.MOD_ID,"whirlwind"));
-
-
-			spells.remove(new Identifier("spellbladenext:thesis"));
-			spells.removeIf(spell -> {
-				if (SpellRegistry.getSpell(spell) != null && SpellRegistry.getSpell(spell).school != null) {
-
-					return SpellRegistry.getSpell(spell).school.equals(ExternalSpellSchools.PHYSICAL_RANGED);
-				}
-				else {
-					return false;
-				}
-			});
-			for(Identifier id : spells){
-				SpellContainer container2 = new SpellContainer(false,"",1,List.of(id.toString()));
-				ItemStack stack = spellOil.getDefaultStack();
-				SpellContainerHelper.addContainerToItemStack(container2, stack);
-				content.add(stack);
-			}
-
-				}
-		);
 			REAVER = Registry.register(
 				ENTITY_TYPE,
 				new Identifier(MOD_ID, "magister"),
